@@ -1,0 +1,27 @@
+﻿Nikita Patel
+CS 544 - Computer Networks
+
+
+The Game Selection Protocol - Requirements
+
+
+STATEFUL: Both the client and server must implement and check & validate the statefulness of your protocol. 
+The validation of states or statefulness in handles in GSP_state.py using the State object. The state object that is initialized on every client and also on the server for each user that connects to it. The client state is validated on every outgoing message, ensuring that the message can in fact be sent by the client in its current state through a method called command_validation in the state object. In this method the current state and outgoing command are compared to the exhaustive dictionary called state_map, and a boolean indicating successful validation is returned. Client statefulness is updated on every incoming message checking against the dictionary in the state object called state_map. 
+Server statefullness is implemented in the same way for each client, however, validation is performed on incoming messages and updating occurs on outgoing messages. Each user or client state data is located in a persistent dictionary (on the server) in GSP_users.
+Statefulness can be seen in client/GSP_state.py in the state object which is called in client/GSP_client.py as well as server/GSP_server_command_callbacks.py
+
+
+CONCURRENT: The server must be able to handle multiple clients 
+Every time a client connects to the GSP server, a thread is spawned to handle all communications after the connection is established. This can be seen in GSP_server.py in the start method. Threads are only stopped when the user sends a command to disconnect.
+
+
+SERVICE: The server must bind to a hardcoded port number (you pick this value) and the client defaults to that port number. This must be documented in your protocol design.  
+Currently the server binds to the ip address '192.168.0.102' and the port 1058 on TCP/IP as can be seen in server/GSP_server.py. The client defaults to both this port number and IP as can be seen in client/GSP_client.py
+
+
+CLIENT: The client must be able to specify the hostname or IP address of the server 
+The user has the ability to optionally specify a hostname or an ip address for the client to connect to. If none is provided the default IP is '192.168.0.102'. This is visible in client/GSP_client.py
+
+
+UI:.
+The command line interface is usable through running GSP_client_start.py. This will prompt the user for input and enable them to play a game. The interface is abstracted from the actual protocol messages through multiple levels of abstraction including a class that serves somewhat as an API for application developers to use in order to interact with the protocol. The commands were kept very general so that any game application developer can understand and use them. The interface api is in ui_abstraction.py.
